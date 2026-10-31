@@ -1,6 +1,34 @@
-<html>
-<style>
-   div{min-height:1em;}
-</style>
-<body>from gTTS import gTTS<br/>import os<br/>import time<br/><br/>def speak(text, lang_code=&#39;hi&#39;):<br/>    print(f&quot;JARVIS: {text}&quot;)<br/>    # Fast generation ke liye slow=False rakha hai<br/>    tts = gTTS(text=text, lang=lang_code, slow=False)<br/>    tts.save(&quot;voice.mp3&quot;)<br/>    os.system(&quot;mpv voice.mp3 --no-video --really-quiet &gt; /dev/null 2&gt;&amp;1&quot;)<br/><br/>def check_for_updates():<br/>    speak(&quot;Sir, system updates check kiye ja rahe hain.&quot;, &#39;hi&#39;)<br/>    print(&quot;--- CHECKING FOR JARVIS UPDATES ---&quot;)<br/>    os.system(&quot;git pull &gt; /dev/null 2&gt;&amp;1&quot;)<br/>    speak(&quot;Jarvis successfully up-to-date hai Sir.&quot;, &#39;hi&#39;)<br/><br/>def main_menu():<br/>    print(&quot;\n[JARVIS SLEEPING MODE: Wake word &#39;jarvis&#39; ka intezaar hai...]&quot;)<br/>    wake_word = input(&quot;Aapko Jarvis ko jagane ke liye kya bolna hai? (Type &#39;jarvis&#39;): &quot;).strip().lower()<br/>    <br/>    if &#39;jarvis&#39; in wake_word or wake_word == &#39;j&#39;:<br/>        speak(&quot;Ji Sir, main sun raha hoon. Boliye kya karna hai?&quot;, &#39;hi&#39;)<br/>        <br/>        while True:<br/>            print(&quot;\n--- JARVIS QUICK MENU ---&quot;)<br/>            print(&quot;1. Alarm Set Karein&quot;)<br/>            print(&quot;2. Call Lagayein&quot;)<br/>            print(&quot;3. YouTube Search&quot;)<br/>            print(&quot;4. Google Search&quot;)<br/>            print(&quot;5. Game Helper&quot;)<br/>            print(&quot;6. App Coding Generator&quot;)<br/>            print(&quot;7. Check for Updates (Auto-Update)&quot;)<br/>            print(&quot;8. Exit / Sleep Mode&quot;)<br/>            <br/>            choice = input(&quot;Apna option chuniye (1-8): &quot;).strip()<br/>            <br/>            if choice == &#39;1&#39;:<br/>                speak(&quot;Time batayiye, jaise 06:30&quot;, &#39;hi&#39;)<br/>                t = input(&quot;Enter time (HH:MM): &quot;).strip()<br/>                try:<br/>                    if &#39;:&#39; in t:<br/>                        hour, minute = t.split(&#39;:&#39;)<br/>                    else:<br/>                        hour, minute = t[:2], t[2:]<br/>                    os.system(f&quot;am start -a android.intent.action.SET_ALARM --ei android.intent.action.EXTRA_HOUR {int(hour)} --ei android.intent.action.EXTRA_MINUTES {int(minute)} --ez android.intent.action.EXTRA_SKIP_UI true &gt; /dev/null 2&gt;&amp;1&quot;)<br/>                    speak(&quot;Alarm set ho gaya Sir.&quot;, &#39;hi&#39;)<br/>                except:<br/>                    speak(&quot;Time ka format galat hai Sir.&quot;, &#39;hi&#39;)<br/>            elif choice == &#39;2&#39;:<br/>                speak(&quot;Phone number dijiye Sir.&quot;, &#39;hi&#39;)<br/>                num = input(&quot;Enter number: &quot;)<br/>                os.system(f&quot;am start -a android.intent.action.CALL -d tel:{num}&quot;)<br/>            elif choice == &#39;3&#39;:<br/>                speak(&quot;YouTube par kya dekhna hai?&quot;, &#39;hi&#39;)<br/>                q = input(&quot;Search query: &quot;)<br/>                os.system(f&quot;am start -a android.intent.action.VIEW -d https://www.youtube.com/results?search_query={q}&quot;)<br/>            elif choice == &#39;4&#39;:<br/>                speak(&quot;Google par kya search karun?&quot;, &#39;hi&#39;)<br/>                q = input(&quot;Search query: &quot;)<br/>                os.system(f&quot;am start -a android.intent.action.VIEW -d https://www.google.com/search?q={q}&quot;)<br/>            elif choice == &#39;5&#39;:<br/>                speak(&quot;Game ka action execute ho raha hai.&quot;, &#39;hi&#39;)<br/>                os.system(&quot;input tap 500 1000&quot;)<br/>                speak(&quot;Ho gaya Sir.&quot;, &#39;hi&#39;)<br/>            elif choice == &#39;6&#39;:<br/>                speak(&quot;Coding likh raha hoon Sir.&quot;, &#39;hi&#39;)<br/>                print(&quot;--- CODE GENERATED FAST ---&quot;)<br/>            elif choice == &#39;7&#39;:<br/>                check_for_updates()<br/>            elif choice == &#39;8&#39;:<br/>                speak(&quot;Theek hai Sir, main sleep mode mein ja raha hoon.&quot;, &#39;hi&#39;)<br/>                break<br/>            else:<br/>                speak(&quot;Kripya sahi vikalp chuniye Sir.&quot;, &#39;hi&#39;)<br/>    else:<br/>        print(&quot;Jarvis sleep mode mein hai. Jagane ke liye &#39;jarvis&#39; type karein.&quot;)<br/><br/>if __name__ == &quot;__main__&quot;:<br/>    while True:<br/>        main_menu()<br/></body>
-</html>
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+import os
+
+class JarvisApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
+        
+        self.label = Label(text="JARVIS AI Ready\nSir, main aapki kya madad karoon?", font_size=20, halign='center')
+        layout.add_widget(self.label)
+        
+        btn_google = Button(text="Open Google", size_hint=(1, 0.2))
+        btn_google.bind(on_press=self.open_google)
+        layout.add_widget(btn_google)
+        
+        btn_alarm = Button(text="Set Alarm (06:30)", size_hint=(1, 0.2))
+        btn_alarm.bind(on_press=self.set_alarm)
+        layout.add_widget(btn_alarm)
+        
+        return layout
+
+    def open_google(self, instance):
+        self.label.text = "Opening Google..."
+        os.system("am start -a android.intent.action.VIEW -d https://www.google.com")
+
+    def set_alarm(self, instance):
+        self.label.text = "Setting Alarm..."
+        os.system("am start -a android.intent.action.SET_ALARM --ei android.intent.action.EXTRA_HOUR 6 --ei android.intent.action.EXTRA_MINUTES 30 --ez android.intent.action.EXTRA_SKIP_UI true")
+
+if __name__ == '__main__':
+    JarvisApp().run()
+   
