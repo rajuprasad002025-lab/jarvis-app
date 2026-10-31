@@ -46,6 +46,8 @@ jobs:
           libltdl-dev
 
     - name: Build with Buildozer
+      env:
+        BUILDER_DEBUG: 1
       run: |
         buildozer -v android debug
 
