@@ -25,7 +25,6 @@ source.exclude_exts = spec
 source.include_patterns = assets/*,images/*.png
 
 # (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
 requirements = python3,kivy
 
 # (str) Supported orientations
@@ -34,7 +33,11 @@ orientation = portrait
 # (list) Permissions
 android.permissions = INTERNET
 
-[buildozer]
+# (int) Target Android API, should be as high as possible
+android.api = 33
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
+# (bool) Automatically accept SDK licenses
+android.accept_sdk_license = True
+
+[buildozer]
 log_level = 2
