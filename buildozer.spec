@@ -9,6 +9,12 @@ package.name = jarvis
 # (str) Package domain (needed for android packaging)
 package.domain = org.jarvis
 
+# (str) Source directory where your application source files are stored
+source.dir = .
+
+# (str) Version of your application
+version = 0.1
+
 # (list) Source files to include (let it empty to include all files)
 source.include_exts = py,png,jpg,kv,atlas
 
